@@ -4,8 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+    <h1>Welcome to Rock, Paper, Scissors!</h1>
+    
+
+    <section class="game">
+        <div id="scores">
+            <h3>User score: <span id="user-score">0</span></h3>
+            <h3>Computer score: <span id="computer-score">0</span></h3>
+        </div>
+
+        <div id="round-winner">
+            <h3 id="round-winner-text"></h3>
+        </div>
+        
+    </section>
+
+    <section class="buttons">
+        <button id="user-buttons">Rock</button>
+        <button id="user-buttons">Paper</button>
+        <button id="user-buttons">Scissors</button>
+    </section>
+
+    <section class="result">
+        <h1 id="final-result"></h1>
+        <button id="restartBtn" style="display: none;">Restart</button>
+    </section>
     
 </body>
 <script>
@@ -26,23 +52,33 @@
 
     // console.log(getComputerChoice());
 
-    function getHumanChoice() {
-        var isTrue = true;
+    // function getHumanChoice() {
+    //     var isTrue = true;
         
 
-        while (isTrue) {
-            var choice = prompt("Choose Rock, Paper, or Scissors");
-            if (choice != "rock" && choice != "paper" && choice != "scissors") {
-                console.log(`${choice} is not rock, paper, or scissors. Try again`);
-            } else {
-                isTrue = false;
-            }
-        }
+    //     while (isTrue) {
+    //         var choice = prompt("Choose Rock, Paper, or Scissors");
+    //         if (choice != "rock" && choice != "paper" && choice != "scissors") {
+    //             console.log(`${choice} is not rock, paper, or scissors. Try again`);
+    //         } else {
+    //             isTrue = false;
+    //         }
+    //     }
 
-        return choice
-    }
+    //     return choice
+    // }
 
     // console.log(getHumanChoise());
+
+    function restartGame() {
+        humanScore = 0;
+        computerScore = 0;
+        document.querySelector("#user-score").textContent = 0;
+        document.querySelector("#computer-score").textContent = 0;
+        document.querySelector("#round-winner-text").textContent = '';
+        document.querySelector("#final-result").textContent = '';
+        document.querySelector("#restartBtn").style.display = 'none';
+    }
 
     function playRound(humanChoice, computerChoice) {
         var winner = "";
@@ -83,13 +119,35 @@
 
     }
 
-    function playGame() {
-        
-        
+    function playGame(user_choice) {
+        winner = playRound(user_choice, getComputerChoice())
+
+        const userScore = document.querySelector("#user-score");
+        userScore.textContent = humanScore;
+
+        const compScore = document.querySelector("#computer-score");
+        compScore.textContent = computerScore;
+
+        const roundWin = document.querySelector("#round-winner-text");
+        roundWin.textContent = winner;
+
+        const result = document.querySelector("#final-result");
+        if (humanScore === 5 || computerScore === 5) {
+            result.textContent = humanScore === 5 ? "YOU WIN!" : "YOU LOSE!";
+            document.querySelector("#restartBtn").style.display = 'block';
+        }
 
     }
 
-    playGame();
+    const usr_buttons = document.querySelectorAll("#user-buttons");
+    usr_buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+            const clickedBtn = button.textContent.toLowerCase();
+            playGame(clickedBtn);
+        });
+    })
+
+    document.querySelector("#restartBtn").addEventListener("click", restartGame);
 
     
 </script>
